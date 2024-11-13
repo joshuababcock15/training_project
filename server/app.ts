@@ -40,5 +40,6 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
   testMiddleware(req, res, next);
 });
+// app.use(testMiddleware);
 
 export default app;
