@@ -2,10 +2,10 @@ import express from "express";
 import cors from "cors";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { testMiddleware }   from "./middleware/test";
+import { testMiddleware } from "./middleware/test";
 import { usersRouter } from "./routers";
 
-const app = express()
+const app = express();
 
 app.use(
   cors({
@@ -29,12 +29,16 @@ const options = {
 };
 
 const swaggerSpec = swaggerJsDoc(options);
-console.log("swaggerSpec", swaggerSpec);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use("*", testMiddleware);
+app.use("/users", usersRouter);
+
 app.get('/', (req, res) => {
-  res.send('Go Bills!')
+  res.send('Go Bills!');
 });
-app.use("/users",  usersRouter);
+
+app.use((req, res, next) => {
+  testMiddleware(req, res, next);
+});
 
 export default app;
